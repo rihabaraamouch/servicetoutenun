@@ -1,104 +1,60 @@
-<?php include("menu.php");?>
+
+<?php require_once("menu.php");?>
+
 
 
 <?php
 	require_once('connexiondb.php');
+    session_start();
+	 $iduser=$_SESSION['user']['ID'];
 	
-	require_once('fonctions.php');
 
-//test
-/*echo 'Nombre des users'.rechercher_par_login ('user2');
-echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
-		$validationErrors = array();
+		$nom = $_POST['nom'];
 		
-		$login = $_POST['login'];
+		$prenom = $_POST['prenom'];
 		
-		$pwd1 = $_POST['pwd1'];
+		$id_categorie = $_POST['id_categorie'];
 		
-		$pwd2 = $_POST['pwd2'];
-		
-		$email = $_POST['email'];
+		$civilite = $_POST['civilite'];
         
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $ville = $_POST['ville'];
+        $profession = $_POST['profession'];
+        $frais_mois = $_POST['frais_mois'];
+        $frais_service = $_POST['frais_service'];
+
+$stmt = $pdo->prepare('INSERT INTO FREELANCER(NOM, PRENOM,ID_CATEGORIE, CIVILITE,PROFESSION,FRAIS_MOIS,FRAIS_SERVICE,DISPONIBILITE) VALUES (:Pnom,:Pprenom,:Pid_categorie, :Pcivilite,:Pprofession, :Pfrais_mois,:Pfrais_service,:Pdisponibilite)');
+$stmt->execute(array(
+				
+						'Pnom' 	=> $nom,
+						'Pprenom' 		=> $prenom,
+						'Pid_categorie'	=>$id_categorie,
+						'Pcivilite' 	=> $civilite,
+						'Pprofession'	=>$profession,
+                        'Pfrais_mois'   => $frais_mois,
+                        'Pfrais_service'=> $frais_service,
+                        'Pdisponibilite' => 1));
+        
+ $req1 = $pdo->prepare("UPDATE UTILISATEUR SET ROLE='FREELANCER' WHERE id=$iduser");
+ $req1->execute();
+    
+        
+ header('Location: sucessfreelancer.php');
+               }
 
 
 
+    
 
-			if (isset($login)) {
-				
-				$filtredLogin = filter_var($login, FILTER_SANITIZE_STRING);
-				
-				if (strlen($filtredLogin) < 4) {
-					
-					$validationErrors[] = "Erreur de validation: Le login doit contenir au moins 4 caractères";
-				
-				}
-			}
-
-			if (isset($pwd1) && isset($pwd2)) {
-				
-				if (empty($pwd1)) {
-					
-					$validationErrors[] = "Erreur de validation: Le mot ne doit pas être vide!";
-				}
-
-				if (md5($pwd1) !== md5($pwd2)) {
-					
-					$validationErrors[] = "Erreur de validation: Les deux mots de passe ne sont pas identiques";
-				}
-			}
-
-			if (isset($email)) {
-				
-				$filtredEmail = filter_var($email, FILTER_SANITIZE_EMAIL);
-				
-				if (filter_var($filtredEmail, FILTER_VALIDATE_EMAIL) != true) {
-					
-					$validationErrors[] = "Erreur de validation: Email non valid";
-					
-				}
-			}
-		
-
-		if (empty($validationErrors)) {
-			
-			if (rechercher_par_login($login) == 0 && recherche_par_email($email) == 0) {
-				
-				$stmt = $pdo->prepare('INSERT INTO UTILISATEUR(LOGIN, PWD,ROLE, EMAIL,ETAT,VILLE,NOM,PRENOM) VALUES (:pLogin,:pPwd,:pRole, :pEmail,:pEtat, :pVille,:pNom,:pPrenom)');
-										
-				$stmt->execute(array(
-				
-						'pLogin' 	=> $login,
-						'pPwd' 		=> md5($pwd1),
-						'pRole'		=>'VISITEUR',
-						'pEmail' 	=> $email,
-						'pEtat'		=>1,
-                        'pVille'    => $ville,
-                        'pNom'      => $nom,
-                        'pPrenom'   => $prenom)
-				);
-				
-				$succesMsg = "Félicitation , vous avez créer votre nouveau compte";
+                               
+                               
                 
-				
-			} else if(rechercher_par_login($login) >0){
-
-				$validationErrors[] = 'Désolé ce login existe déja';
-				
-			}else if(recherche_par_email($email) >0){
-
-				$validationErrors[] = 'Désolé cet Email existe déja';
-			}
-
-		}
-	}
+			
+	
 	
 	?>
+
 
 
 <!DOCTYPE html>
@@ -136,7 +92,7 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
 </head>
 
 <body>
-    <div class="row register-form" >
+    <div class="row register-form">
         <div class="col-md-8 offset-md-2">
             
             <form class="custom-form" method="post" >
@@ -145,45 +101,45 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
                 <div class="form-row form-group">
                    
                     
-                    <div class="col-sm-4 label-column"><label class="input-container">LOGIN</label></div>
+                    <div class="col-sm-4 label-column"><label class="input-container">NOM</label></div>
                     <div class="col-sm-6 input-column"><input pattern=".{4,}"
 							title="Le login doit contenir au moins 4 caractères"
 							class="form-control"
 							type="text"
-							name="login"
+							name="nom"
 							autocomplete="off"
-							placeholder="Taper votre Login"
+							placeholder="Taper votre Nom"
 							required="required"></div>
                 </div>
                 
                 <div class="form-row form-group">
                     
                     
-                    <div class="col-sm-4 label-column"><label class="col-form-label" >NOM</label></div>
+                    <div class="col-sm-4 label-column"><label class="col-form-label" >PRENOM</label></div>
                     <div class="col-sm-6 input-column"><input class="form-control"
 							type="text"
-							name="nom"
-							placeholder="Taper votre Nom"></div>
+							name="prenom"
+							placeholder="Taper votre Prenom"></div>
                 </div>
                     
                     
                 
                                 <div class="form-row form-group">
-                                    <div class="col-sm-4 label-column" ><label class="col-form-label" >PRÉNOM</label></div>
+                                    <div class="col-sm-4 label-column" ><label class="col-form-label" ></label>Categorie</div>
                     <div class="col-sm-6 input-column"><input class="form-control"
 							type="text"
-							name="prenom"
-							placeholder="Taper votre Prénom"></div>
+							name="id_categorie"
+							placeholder="numero de la categorie"></div>
                     </div>
                     
                     
                     
             <div class="form-row form-group">
-                <div class="col-sm-4 label-column"><label class="col-form-label" >VILLE</label></div>
+                <div class="col-sm-4 label-column"><label class="col-form-label" >Civilité</label></div>
                     <div class="col-sm-6 input-column"><input class="form-control"
 							type="text"
-							name="ville"
-							placeholder="Taper votre Ville"></div>
+							name="civilite"
+							placeholder="Taper votre civilité"></div>
                     </div>
                 
                     
@@ -197,11 +153,11 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
                     
                                     <div class="form-row form-group">
 
-                    <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Email</label></div>
+                    <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Profession</label></div>
                     <div class="col-sm-6 input-column"><input class="form-control"
-							type="email"
-							name="email"
-							placeholder="Taper votre Email"></div>
+							name="profession"
+                            type="text"
+							placeholder="Taper votre profession"></div>
                 </div>
                 
                 
@@ -213,58 +169,38 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
                 
                 
                 <div class="form-row form-group">
-                    <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">MOT DE PASSE</label></div>
-                    <div class="col-sm-6 input-column"><input minlength=4
+                    <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Frais par mois:(Dhs)</label></div>
+                    <div class="col-sm-6 input-column"><input 
 							class="form-control"
-							type="password"
-							name="pwd1"
-							autocomplete="new-password"
-							placeholder="Taper votre mot de passe"
+							type="text"
+							name="frais_mois"
+							placeholder="Taper votre frais par mois"
 							required></div>
                 </div>
                 <div class="form-row form-group">
-                    <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">CONFIRMER MOT DE PASSE</label></div>
-                    <div class="col-sm-6 input-column"><input minlength=4
+                    <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Frais par service:(Dhs)</label></div>
+                    <div class="col-sm-6 input-column"><input 
 							class="form-control"
-							type="password"
-							name="pwd2"
-							autocomplete="new-password"
-							placeholder="Retaper votre mot de passe pour le confirmer"
+							type="text"
+							name="frais_service"
+							
+							placeholder="taper les frais de service"
 							required>
-                        </div>
+                    </div>
+                
                     
                     
                     
                     
                     
                     
-                </div><button class="btn btn-light submit-button" type="submit" style="margin-top: -9px;background: rgb(245,130,130);" value="Enregistrer">s'inscrire</button>
+                    
+                </div><button class="btn btn-light submit-button" type="submit" style="margin-top: -9px;background: rgb(245,130,130);" value="Enregistrer">Devenir un Freelancer</button>
             </form>
             
             <div class="the-errors text-center">
 			 
-				<?php
 				
-					if (isset($validationErrors) && !empty($validationErrors)) {
-					    
-						foreach ($validationErrors as $error) {
-						    
-							echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-							
-						}
-					}
-
-					if (!empty($succesMsg)) {
-						
-						echo '<div class="alert alert-success" role="alert">' . $succesMsg . '</div>';
-
-						header("refresh:3;url=login.php");
-						
-						exit();
-					}
-
-				
-				?>
 				
 			</div>
         </div>

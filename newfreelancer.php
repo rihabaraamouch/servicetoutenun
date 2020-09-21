@@ -1,11 +1,12 @@
 <?php include("menu.php");?>
+<?php require_once("connexiondb.php")?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Bakery (BS 4) (Backup 1598298330423)</title>
+    <title>Service tout-en-un</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo+Black">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
@@ -39,7 +40,26 @@
         <div class="jumbotron" style="background: url(&quot;assets/img/handshake-4002834_1920.jpg&quot;) center / cover; margin-top:50px">
             <h1 class="text-center" style="border-color: rgb(255,255,255);color: rgb(255,255,255);">Devenir un Freelancer</h1>
             <p class="text-center" style="color: rgb(255,255,255);">Vous apportez la compétence. Nous vous faciliterons la tâche.<br></p>
-            <p class="text-center"><a class="btn btn-primary" role="button" href="#" style="background: #ef7070;">se connecter&nbsp;</a></p>
+    
+    <p class="text-center">
+    <?php session_start();
+
+if(isset($_SESSION)){include("newfreesess.php");} else {include("newfreenosess.php");}
+
+                    ?>
+
+    
+
+    
+    
+    
+    
+    
+   </p>
+            
+            
+            
+            
         </div>
     </section>
     <header></header>
@@ -62,14 +82,18 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <h1 style="margin-top: 19px;margin-right: 165px;font-family: Oswald, sans-serif;text-align: center;margin-left: 133px;">Inscrivez-vous et créez votre profil aujourd'hui</h1>
-        <p style="margin-left: 49px;"><button class="btn btn-primary" type="button" style="margin-left: 422px;">s'inscrire</button></p>
-    </div>
+    
+     <?php session_start();
+
+if(!isset($_SESSION)){include("newfreenosess2");} 
+                    ?>
+
+    
+    
     
      <footer>
-        <div class="container">
-            <div class="row">
+        <div class="container" >
+            <div class="row" style="margin-top:60px">
                 <div class="col-sm-6 col-md-4 footer-navigation">
                     <h3><a href="#">SERVICE TOUT-EN-UN</a></h3>
                     <p class="links"><a href="#">Service</a><strong> · </strong><a href="#">Pricing </a><strong> · </strong><a href="#">Order </a><strong> </strong></p>

@@ -1,33 +1,25 @@
-<?php include("menu.php");?>
 
 
 <?php
-	require_once('connexiondb.php');
-	
-	require_once('fonctions.php');
+	require_once("connexiondb.php");
+	require_once("fonctions.php"); 
 
-//test
-/*echo 'Nombre des users'.rechercher_par_login ('user2');
-echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
 
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		$validationErrors = array();
 		
-		$login = $_POST['login'];
+		$login = $_POST['LOGIN'];
 		
-		$pwd1 = $_POST['pwd1'];
+		$pwd1 = $_POST['PWD1'];
 		
-		$pwd2 = $_POST['pwd2'];
+		$pwd2 = $_POST['PWD2'];
 		
-		$email = $_POST['email'];
-        
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $ville = $_POST['ville'];
-
-
-
+		$email = $_POST['EMAIL'];
 
 			if (isset($login)) {
 				
@@ -67,35 +59,7 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
 
 		if (empty($validationErrors)) {
 			
-			if (rechercher_par_login($login) == 0 && recherche_par_email($email) == 0) {
-				
-				$stmt = $pdo->prepare('INSERT INTO UTILISATEUR(LOGIN, PWD,ROLE, EMAIL,ETAT,VILLE,NOM,PRENOM) VALUES (:pLogin,:pPwd,:pRole, :pEmail,:pEtat, :pVille,:pNom,:pPrenom)');
-										
-				$stmt->execute(array(
-				
-						'pLogin' 	=> $login,
-						'pPwd' 		=> md5($pwd1),
-						'pRole'		=>'VISITEUR',
-						'pEmail' 	=> $email,
-						'pEtat'		=>1,
-                        'pVille'    => $ville,
-                        'pNom'      => $nom,
-                        'pPrenom'   => $prenom)
-				);
-				
-				$succesMsg = "Félicitation , vous avez créer votre nouveau compte";
-                
-				
-			} else if(rechercher_par_login($login) >0){
-
-				$validationErrors[] = 'Désolé ce login existe déja';
-				
-			}else if(recherche_par_email($email) >0){
-
-				$validationErrors[] = 'Désolé cet Email existe déja';
-			}
-
-		}
+			
 	}
 	
 	?>
@@ -134,90 +98,45 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/Tricky-Grid---2-Column-on-Desktop--Tablet-Flip-Order-of-12-Column-rows-on-Mobile.css">
 </head>
+    
+    
+    
+    
+    
+    
 
 <body>
-    <div class="row register-form" >
+    <div class="row register-form">
         <div class="col-md-8 offset-md-2">
             
-            <form class="custom-form" method="post" >
-                
+            
+            <form class="custom-form" method="post" action="">
                 <h1><img src="assets/img/logo2.PNG">SERVICE TOUT-EN-UN</h1>
                 <div class="form-row form-group">
-                   
-                    
-                    <div class="col-sm-4 label-column"><label class="input-container">LOGIN</label></div>
+                    <div class="col-sm-4 label-column"><label class="input-container">login</label></div>
                     <div class="col-sm-6 input-column"><input pattern=".{4,}"
 							title="Le login doit contenir au moins 4 caractères"
 							class="form-control"
 							type="text"
-							name="login"
+							name="LOGIN"
 							autocomplete="off"
 							placeholder="Taper votre Login"
 							required="required"></div>
                 </div>
                 
                 <div class="form-row form-group">
-                    
-                    
-                    <div class="col-sm-4 label-column"><label class="col-form-label" >NOM</label></div>
-                    <div class="col-sm-6 input-column"><input class="form-control"
-							type="text"
-							name="nom"
-							placeholder="Taper votre Nom"></div>
-                </div>
-                    
-                    
-                
-                                <div class="form-row form-group">
-                                    <div class="col-sm-4 label-column" ><label class="col-form-label" >PRÉNOM</label></div>
-                    <div class="col-sm-6 input-column"><input class="form-control"
-							type="text"
-							name="prenom"
-							placeholder="Taper votre Prénom"></div>
-                    </div>
-                    
-                    
-                    
-            <div class="form-row form-group">
-                <div class="col-sm-4 label-column"><label class="col-form-label" >VILLE</label></div>
-                    <div class="col-sm-6 input-column"><input class="form-control"
-							type="text"
-							name="ville"
-							placeholder="Taper votre Ville"></div>
-                    </div>
-                
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                                    <div class="form-row form-group">
-
                     <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Email</label></div>
                     <div class="col-sm-6 input-column"><input class="form-control"
 							type="email"
-							name="email"
+							name="EMAIL"
 							placeholder="Taper votre Email"></div>
                 </div>
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 <div class="form-row form-group">
                     <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">MOT DE PASSE</label></div>
                     <div class="col-sm-6 input-column"><input minlength=4
 							class="form-control"
 							type="password"
-							name="pwd1"
+							name="PWD1"
 							autocomplete="new-password"
 							placeholder="Taper votre mot de passe"
 							required></div>
@@ -227,7 +146,7 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
                     <div class="col-sm-6 input-column"><input minlength=4
 							class="form-control"
 							type="password"
-							name="pwd2"
+							name="PWD2"
 							autocomplete="new-password"
 							placeholder="Retaper votre mot de passe pour le confirmer"
 							required>
@@ -235,40 +154,23 @@ echo'nombre d email'.recherche_par_email('rihab.araamouch@gmail.com');*/
                     
                     
                     
+                    <div class="col-sm-6 input-column" style="margin-top:20px">
+                    <select name = "ROLE" class="form-control" id="exampleFormControlSelect1">
+      <option>Freelancer</option>
+      <option>Client</option>
+                        </select>
+                    </div>
                     
                     
                     
-                </div><button class="btn btn-light submit-button" type="submit" style="margin-top: -9px;background: rgb(245,130,130);" value="Enregistrer">s'inscrire</button>
-            </form>
+                </div><button class="btn btn-light submit-button" type="submit" style="margin-top: -9px;background: rgb(245,130,130);" value="Enregistrer">s'inscrire</button></form>
             
-            <div class="the-errors text-center">
 			 
-				<?php
 				
-					if (isset($validationErrors) && !empty($validationErrors)) {
-					    
-						foreach ($validationErrors as $error) {
-						    
-							echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-							
-						}
-					}
-
-					if (!empty($succesMsg)) {
-						
-						echo '<div class="alert alert-success" role="alert">' . $succesMsg . '</div>';
-
-						header("refresh:3;url=login.php");
-						
-						exit();
-					}
-
-				
-				?>
 				
 			</div>
         </div>
-    </div>
+    
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>

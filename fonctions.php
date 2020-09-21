@@ -1,65 +1,30 @@
 <?php
    
   
-    function findUserByLogin($login){
+    function rechercher_par_login($login){
         
-        global $con;
+        global $pdo;
         
-        $statement=$con->prepare("SELECT login FROM utilisateur WHERE login=?");
+        $requete=$pdo->prepare("SELECT LOGIN FROM UTILISATEUR WHERE LOGIN=?");
         
-        $statement->execute(array($login));
+        $requete->execute(array($login));
         
-        $count=$statement->rowCount();
-        
-        return $count;
-        
-    }
-	
-	 function findUserByEmail($email){
-	     
-        global $con;
-        
-        $statement=$con->prepare("SELECT email FROM utilisateur WHERE email=?");
-        
-        $statement->execute(array($email));
-        
-        $count=$statement->rowCount();
-        
-        return $count;
+        return $requete->rowCount();
         
     }
 
-     function redirectPage($messag, $url = nul, $seconds=2){
-         
-        if($url===null){
-            
-            $url='dashBoard.php';
-            
-            $back='HomePage';
-            
-        }elseif($url=='back'){
-            
-            if(isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])){
-                
-                $url=$_SERVER['HTTP_REFERER'];
-                
-                $back='Previous Page';
-                
-            }else{
-                
-                $url='dashBoard.php';
-                
-                $back='HomePage';
-            }
-            
-        }
-        echo $messag;
-        
-        echo "<div class='alert alert-info'> You Will be redirected after $seconds seconds</div>";
-        
-        header("refresh:$seconds;url=$url");
-        
-        exit();
-    }
 	
+	 function recherche_par_email($email){
+	     
+        global $pdo;
+        
+        $statement=$pdo->prepare("SELECT EMAIL FROM UTILISATEUR WHERE EMAIL=?");
+        
+        $statement->execute(array($email));
+                
+        return $statement->rowCount();
+        
+    }
 ?>
+
+     
